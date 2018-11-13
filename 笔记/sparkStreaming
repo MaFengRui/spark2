@@ -1,0 +1,26 @@
+===============================================================================================================
+术语定义:
+离散流（discretized stream）或者DStream :这是Spark Streaming对内部持续的实时数据流的内部抽象描述，即我们处理的一个实时数据流。在SparkStreaming中对应一个Dstream实例
+批数据（batch data）这是化整为零的第一步，将实时流数据以时间片进行单位分批，将流处理转换为时间片数据的批处理，随着持续时间的推移，这些处理结果就形成可对应的结果数据流
+时间片或批处理时间间隔（batch interval）这是人为对流数据进行定量的标准,以时间片为我们拆分流数据的依据，一个时间片的数据对应一个Rdd实例
+窗口长度（window length） 一个窗口覆盖的流数据的时间长度，必须是批处理
+批数据，流数据的区别？
+
+数据源：kafka、文件系统、数据库、sorket
+
+元语：transfrom output
+
+
+
+
+app/brower -> server -> 日志服务器　-> flume采集日志　-> kafka消息中间件　->　实时流处理框架（sparkStreaming,storm,flink）-> 数据库（分析处理数据）->　server服务器展示
+
+处理方式：将数据切分为批次的数据进行处理，持续不断输入的数据流转换成多个batch分片，使用一批spark应用实例进行处理
+特点：１、ease of use 易于使用：提供多种语言接口
+     ２、容错
+     https://www.cnblogs.com/liuliliuli2017/p/6809094.html
+ 任务的结束：手动关闭
+ storm　flik streaming　区别？
+ 处理底层：discretized（离散） stream Dstream　是一个RDD的序列
+
+

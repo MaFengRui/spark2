@@ -1,0 +1,123 @@
+1.作业提交的代码?
+
+./bin/spark-submit \
+--class <main-class> \
+--master <master-url> \
+--executor-memory 20G \
+--total-executor-cores <number of cores> \
+... # other options
+<application-jar> \
+[application-arguments]
+举例：
+/usr/local/spark-1.6.3-bin-hadoop2.6/bin/spark-submit \
+--class org.apache.spark.examples.SparkPi \
+--master spark://node01:7077 \
+/usr/local/spark-1.6.3-bin-hadoop2.6/lib/spark-examples-1.6.3-hadoop2.6.0.jar\
+100
+
+2.wordcount?
+
+    　  wcSparkConf = new SparkConf().setAppName("wc").setMaster("local")
+        val context = new SparkContext(wcSparkConf)
+        val unit = context.textFile("/media/mafenrgui/办公/马锋瑞/udd.txt",4)
+        val unit1 = unit.flatMap(_.split(" "))
+        val unit2 = unit1.filter(_!= "")
+        val unit3 = unit2.map((_,1))
+        val unit4 = unit3.reduceByKey(_+_)
+        val unit5 = unit4.sortBy(_._2,false)
+        println(unit5)
+        unit5.saveAsTextFile("/media/mafenrgui/办公/马锋瑞/test")
+        context.stop()
+
+3.job提交流程?
+         看图！！
+
+4.启动集群的流程?
+
+    1,启动Master进程
+    2,Master开始解析conf目录的slaves配置文件,找到相应的Worker节点,开始启动Worker进程
+    3,Worker进程开始向Master发送注册信息
+    4,Master接受到Worker的注册信息后并保存到内存和磁盘里,然后向Worker发送注册成功信息
+    5,Worker开始和Master建立心跳,Master每次接收到心跳后更新WorkerInfo的最后一次心跳时间。
+
+5.关于RDD的编程?
+        *不可变
+    		RDD是一个只读的、分区记录的集合。通过三种方式可以创建RDD
+    	* 可分区
+    		一个RDD可以包含多个分区，每个分区就是一个dataset片段
+        * 元素可并行计算
+    		元素来自跨节点的数据集，可以并行处理这些数据集 [每个RDD的数据都以block的形式存储于多台机器上]
+
+
+1、写出提交Spark任务命令。（5分）
+./Spark-shell \
+--test.class
+--master Spark://master:7077 \
+--executor-memory 1G \
+--total-executor-cores 2 \
+/jar \
+参数
+
+2、列出至少5个用于聚合的算子（5分）
+reduceby reducebykey groupbykey countbykey combinebykey join
+对一个集合操作输入多个参数只要得到一个结果都属于聚合
+3、写出下列代码的打印结果。（5分）
+def joinRdd(sc:SparkContext) {
+	val name= Array((1,"spark"),(2,"flink"),(3,"hadoop"))
+	val score= Array((1,100),(2,90),(3,80))
+	val namerdd=sc.parallelize(name);
+	val scorerdd=sc.parallelize(score);
+	val result = namerdd.join(scorerdd);
+	result.collect.foreach(println);
+}
+
+(1,("spark",100))
+(2,("flnik",90))
+(3,("hadoop",80))
+
+4、简述RDD的概念。（10分）
+不可变的、可分区的弹性分布式集
+
+创建RDD的三种方式 1、并行化创建　２、其他RDD的转换　３、读取外部文件
+五大属性
+         1、一组分片即数据集的基本组成单位，每个分片会被一个计算任务处理，并决定并行计算的粒度
+		２、基于每一个分片做计算
+		３、RDD之间的依赖关系
+		４、分片函数 [基于哈希的HashPartitioner，另一个是基于范围的RangePartitioner]
+		５、一个列表，存储存取每个Partition的优先位置 [移动数据不如移动计算]
+
+5、用Spark Core实现WordCount。（包括模板代码）（15分）
+    sc.textFile().flatMap(_.split(" ")).map((_,1)).reducebykey(_+_).saveAsTextFile("dfddf")
+6、筛选出包含 Spark 的行，并统计行数。（10分）
+数据文件为：testdata.txt
+内容为：
+At a high level
+every Spark application consists of a driver program that runs the user’s main function and executes various parallel operations on a cluster
+The main abstraction Spark provides is a resilient distributed dataset (RDD)
+which is a collection of elements partitioned across the nodes of the cluster that can be operated on in parallel
+RDDs are created by starting with a file in the Hadoop file system (or any other Hadoop-supported file system)
+or an existing Scala collection in the driver program
+and transforming it
+Users may also ask Spark to persist an RDD in memory
+allowing it to be reused efficiently across parallel operations. Finally
+RDDs automatically recover from node failures
+ text.map(_.split(" "))
+7、找到包含单词最多的那一行内容共有几个单词。（10分）
+数据文件为：testdata.txt
+
+8、计算testdata.txt文件中包含“a” 的行数 和包含“b”的行数。（10分）
+        //去看test03
+9、描述集群启动流程（15分）
+
+10、描述任务提交流程（15分）
+
+11、checkpoint的应用场景和使用步骤？
+    RDD的第五个属性等
+12、什么情况下使用广播变量？和使用广播变量的需要注意的什么问题？
+
+13、描述map和mappartion的区别和应有场景？
+
+14、DATAFrame的概念
+
+15、描述spark的应用场景
+

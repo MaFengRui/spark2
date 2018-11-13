@@ -1,0 +1,5 @@
+1,fanbingbing,28,90
+2,libingbing,30,92
+3,guanxiaotong,22,90
+4,yanni,28,95
+5,sunli,32,90

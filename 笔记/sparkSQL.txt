@@ -1,0 +1,12 @@
+===============================================================================================================
+使用　sparkSQL或者是DataFrameAPI
+
+DataSet 有两类操作;
+sql 逻辑的计划，
+RDD,DataSet,DataFrame区别与联系
+http://www.mamicode.com/info-detail-2116863.html
+https://blog.csdn.net/czmacd/article/details/81093948
+
+
+
+

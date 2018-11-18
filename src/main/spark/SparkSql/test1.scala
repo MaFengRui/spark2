@@ -22,7 +22,7 @@ object test1 {
       val strings = x.split("\t")
       (strings(0).toInt, strings(1), strings(2))
     })
-
+    
     val unit: RDD[(Int, String, String)] = tupe.sortBy(x=> (x._1,x._2))
     val tuples = unit.collect()
 
